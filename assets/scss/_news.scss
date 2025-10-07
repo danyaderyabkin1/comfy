@@ -1,0 +1,111 @@
+.news {
+  padding: 0;
+  background-color: #FEF5E6;
+
+  @include sm-mobile {
+    padding: 0 0 0.5rem 0;
+  }
+
+  .title {
+    margin-bottom: 2rem;
+    @include sm-mobile {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__container {
+    background-color: #EFF0F2;
+    border-radius: 0 0 80px 80px;
+    padding: 3rem;
+
+    @include sm-mobile {
+      padding: 1rem 1rem 2rem;
+      border-radius: 0 0 50px 50px;
+    }
+    &.bg-white {
+      background-color: $white;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 100px;
+    @include xxl-desktop {
+      gap: 50px;
+    }
+
+    @include xl-desktop {
+      gap: 20px;
+    }
+
+    @include lg-desktop {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include sm-tablets {
+      grid-template-columns: 1fr;
+    }
+
+    @include sm-mobile {
+      gap: 30px 10px;
+    }
+
+    @include sm-mobile-x {
+      grid-template-columns: 1fr;
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: $white;
+      border-radius: 25px;
+      position: relative;
+      box-shadow: 0px 2px   4px 0px #00000013;
+      &:nth-child(n + 4) {
+        display: none;
+      }
+
+      span {
+        right: 15px;
+        bottom: 5px;
+        position: absolute;
+        color: #797979;
+        font-weight: $fwBold;
+        font-size: $fontMedium;
+      }
+
+      img {
+        height: 260px;
+        object-fit: cover;
+        border-radius: 25px;
+        width: 100%;
+        transition: opacity .2s;
+        @include sm-mobile {
+          min-height: 160px;
+        }
+
+      }
+    }
+
+  }
+  &__link {
+    padding: 0 1rem 1.5rem;
+    word-break: break-word;
+  }
+}
+
+@media (any-hover: hover) {
+  .news {
+    &__list {
+      li:hover {
+        img {
+          opacity: .8;
+        }
+      }
+    }
+  }
+}
