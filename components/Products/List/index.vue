@@ -12,6 +12,7 @@ const props = defineProps({
   },
   gridFour: {
     type: Boolean,
+    default: true,
     required: false
   },
   categoryId: {
@@ -368,8 +369,8 @@ watch(isHaveFilter, (val) => {
 <template>
   <section class="products">
     <div class="container products__container">
-      <div :class="{'grid--only': !products?.length}" class="products__wrapper">
-        <aside v-if="isHaveFilter" class="aside">
+      <div :class="{'grid--only': !products?.length, 'one-grid': !gridFour}" class="products__wrapper">
+        <aside v-if="isHaveFilter && gridFour" class="aside">
           <h4 class="text-2xl border-b border-b-gray-200 pb-3 ">Фильтр</h4>
 
           <div v-if="Object.keys(groupedFeatures).length" class="py-3">
@@ -383,7 +384,7 @@ watch(isHaveFilter, (val) => {
                     class="flex items-center gap-2 cursor-pointer px-3 py-1 bg-gray-100 rounded-full"
                 >
                   <UCheckbox
-                      color="yellow"
+                      color="gray"
                       :model-value="!!selectedFeatures[`${title}:${value}`]"
                       @update:model-value="(val) => handleFeatureToggle(`${title}:${value}`, val)"
                   />
@@ -478,8 +479,8 @@ watch(isHaveFilter, (val) => {
 <!--          </ul>-->
         </aside>
         <div>
-          <Sort v-if="products?.length" @refresh="refreshProducts" @open-filter="isHaveFilter = !isHaveFilter"/>
-          <ul :class="{'four-columns': gridFour, 'image-contain': containImages}" class="products__list four-columns" itemscope itemtype="http://schema.org/ItemList">
+          <Sort v-if="products?.length && gridFour" @refresh="refreshProducts" @open-filter="isHaveFilter = !isHaveFilter"/>
+          <ul :class="{'four-columns': gridFour, 'image-contain': containImages}" class="products__list" itemscope itemtype="http://schema.org/ItemList">
 
             <ProductsListItem
                 v-for="product in filteredProducts"

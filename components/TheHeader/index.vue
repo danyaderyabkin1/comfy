@@ -12,7 +12,7 @@ const { data: mainCategories } = await useAsyncData('categories', async () => {
   const withSubs = await Promise.all(
       categories.map(async cat => ({
         ...cat,
-        subCategories: await fetchProducts(cat.id)
+        subCategories: await fetchProducts(cat.id, '', '')
       }))
   );
   return { categories: withSubs };
@@ -52,7 +52,9 @@ watch(() => route.path, () => {
             <NuxtLink class="nav__link cursor-default" v-if="category.id === 14">{{category.title}}
               <UIcon  name="lucide:chevron-down" class="size-5"/>
             </NuxtLink>
-            <TheHeaderSubMenu v-if="category.id !== 13" :subCategory="category?.subCategories"/>
+            <ClientOnly>
+              <TheHeaderSubMenu :sub-category="category?.subCategories"/>
+            </ClientOnly>
           </li>
           <li class="nav__item">
             <NuxtLink class="nav__link" to="/reviews">Отзывы

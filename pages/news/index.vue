@@ -27,7 +27,7 @@ useSeoMeta({
     <section class="news">
       <div class="container news__container">
         <h3 class="title">Публикации</h3>
-        <ul class="news__list">
+        <ul class="news__list tree">
           <MainNewsListItem v-for="item in news" :key="item?.id" :article="item"/>
         </ul>
       </div>

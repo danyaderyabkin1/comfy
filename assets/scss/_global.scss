@@ -74,7 +74,7 @@ h1 {
 }
 
 .primary--border {
-  border-bottom: 4px solid #C7B6A6;
+  border-bottom: 4px solid #EBD300;
 }
 
 .title {
@@ -133,7 +133,7 @@ h1 {
 }
 
 .btn-white {
-  color: $primaryColor;
+  color: $black;
   background-color: $white;
   transition: color .3s, background-color .3s;
 }
@@ -147,6 +147,10 @@ h1 {
   font-size: $fontSmall;
   transition: color .3s, background-color .3s;
   border: 1px solid $textColor;
+}
+.btn-gray{
+  color: $black;
+  background-color: $grayBg;
 }
 
 .btn-transparent {
@@ -179,7 +183,6 @@ h1 {
   .btn-white {
     &:hover {
       background-color: $primaryColor;
-      color: $white;
     }
   }
   .btn-transparent {
@@ -191,7 +194,6 @@ h1 {
 
   .btn-primary {
     &:hover {
-      color: $white;
       box-shadow: 0 2px 6px -1px $primaryColorDark;
       span {
         color: $white;

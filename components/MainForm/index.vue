@@ -85,7 +85,7 @@ const sendForm = async (e) => {
             <input :class="{'border-red-500': errorMessage}"
                    name="whatsapp[Укажите Ваш номер]"
                    v-model="name"
-                   class="p-2.5 appearance-none border-2 border-gray-100 rounded-3xl py-2 px-4 text-gray-700 leading-tight bg-[#F3F3F3] focus:outline-none focus:bg-white focus:border-yellow-300"
+                   class="p-2.5 appearance-none border-2 border-gray-100 rounded-3xl py-2 px-4 text-gray-700 leading-tight bg-[#F3F3F3] focus:outline-none focus:bg-white focus:border-gray-300"
                    type="text"
                    placeholder="Ваше имя"
                    required>
@@ -93,7 +93,7 @@ const sendForm = async (e) => {
                    name="whatsapp[Укажите Ваш номер]"
                    v-model="phone"
                    v-maska="'+7 ### ### ##-##'"
-                   class="feedback__input p-2.5 appearance-none border-2 border-gray-100 rounded-3xl py-2 px-4 text-gray-700 leading-tight bg-[#F3F3F3] focus:outline-none focus:bg-white focus:border-yellow-300"
+                   class="feedback__input p-2.5 appearance-none border-2 border-gray-100 rounded-3xl py-2 px-4 text-gray-700 leading-tight bg-[#F3F3F3] focus:outline-none focus:bg-white focus:border-gray-300"
                    type="text"
                    placeholder="Ваш телефон"
                    required>
@@ -107,9 +107,9 @@ const sendForm = async (e) => {
           <div v-if="errorMessage" class="error absolute text-[12px] bottom-1">Ошибка: Введите номер полностью!</div>
         </form>
         <div class="md:max-w-96">
-          <UCheckbox color="yellow" v-model="checkbox">
+          <UCheckbox color="gray" v-model="checkbox">
             <template #label>
-              <span class="text-gray-600">Я даю согласие на обработку моих персональных данных ООО «Comfy» (ИНН 3700010049) в целях обработки заявки в мессенджерах whatsapp и telegram. <router-link class="text-yellow-500" target="_blank" to="/assets/policyO.pdf">Политика конфиденциальности</router-link> </span>
+              <span class="text-gray-600">Я даю согласие на обработку моих персональных данных ООО «Comfy» (ИНН 3700010049) в целях обработки заявки в мессенджерах whatsapp и telegram. <router-link class="text-gray-500" target="_blank" to="/assets/policyO.pdf">Политика конфиденциальности</router-link> </span>
             </template>
           </UCheckbox>
         </div>

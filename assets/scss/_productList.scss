@@ -85,6 +85,9 @@
     align-items: flex-start;
     gap: 25px;
     grid-template-columns: 330px 1fr;
+    &.one-grid {
+      grid-template-columns: 1fr;
+    }
     @include md-desktop {
       grid-template-columns: 1fr;
     }
@@ -272,7 +275,7 @@
       }
 
       img {
-        height: 360px;
+        height: 260px;
         object-fit: cover;
         transition: opacity .3s;
         width: 100%;
@@ -299,7 +302,7 @@
         }
 
         .btn {
-          padding: 0.15rem 1.25rem;
+          padding: 0.15rem 1rem;
           border-radius: 10px;
           min-height: 30px;
           font-size: $fontMedium;

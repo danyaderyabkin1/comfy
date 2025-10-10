@@ -9,6 +9,52 @@ const props = defineProps({
 const emit = defineEmits(['openModal', 'addToCart'])
 
 const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
+
+// Функция для получения минимальной цены со скидкой
+const getMinPrice = computed(() => {
+  if (!props.product?.sku?.length) return null
+
+  // Фильтруем SKU с включенной скидкой и доступной ценой со скидкой
+  const discountedSkus = props.product.sku.filter(sku =>
+      sku.is_discount_enabled && sku.discount_price !== null && sku.quantity > 0
+  )
+
+  // Если есть SKU со скидкой, берем минимальную цену со скидкой
+  if (discountedSkus.length > 0) {
+    const minDiscountedPrice = Math.min(...discountedSkus.map(sku => sku.discount_price))
+    return minDiscountedPrice
+  }
+
+  // Если нет скидок, берем минимальную обычную цену
+  const availableSkus = props.product.sku.filter(sku => sku.quantity > 0)
+  if (availableSkus.length > 0) {
+    return Math.min(...availableSkus.map(sku => sku.price))
+  }
+
+  return null
+})
+
+// Функция для получения исходной цены (без скидки)
+const getOriginalPrice = computed(() => {
+  if (!props.product?.sku?.length) return null
+
+  // Находим SKU с минимальной ценой для отображения исходной цены
+  const availableSkus = props.product.sku.filter(sku => sku.quantity > 0)
+  if (availableSkus.length > 0) {
+    const minPriceSku = availableSkus.reduce((min, sku) => sku.price < min.price ? sku : min)
+    return minPriceSku.price
+  }
+
+  return null
+})
+
+// Проверяем, есть ли у товара активные скидки
+const hasActiveDiscount = computed(() => {
+  return props.product?.sku?.some(sku =>
+      sku.is_discount_enabled && sku.discount_price !== null && sku.quantity > 0
+  )
+})
+
 const sendToCart = ref({
   items: [{
     domain: 'b.hoteltex.online',
@@ -38,7 +84,6 @@ const addToCart = async () => {
 
 <template>
   <li itemscope itemprop="itemListElement" itemtype="http://schema.org/Product">
-<!--    <pre>{{product}}</pre>-->
     <NuxtLink v-if="product?.preview_image" :title="cleanText(product?.title)" :to="`${product?.url}`">
       <img :src="product?.preview_image" loading="lazy" alt="product-image" itemprop="image">
     </NuxtLink>
@@ -48,28 +93,48 @@ const addToCart = async () => {
     <NuxtLink :title="cleanText(product?.title)" class="products__link" :to="`${product?.url}`" itemprop="url">
       <span itemprop="name">{{ cleanText(product?.title) }}</span>
     </NuxtLink>
-<!--    <div v-if="product?.features.length">-->
-<!--      <p class="text-sm" v-for="(product, i) in  product?.features" :key="i">{{product?.title}}: <span >{{product?.description}}</span> </p>-->
-<!--    </div>-->
-<!--    <p v-if="product?.sku.length" class="border-t  mt-auto border-gray-200">-->
-<!--      <div class="text-sm flex justify-between mb-2" v-for="sku in  product?.sku" :key="sku.id" itemscope itemprop="offers" itemtype="http://schema.org/Offer">-->
-<!--        <p>{{sku?.title}}</p>-->
-<!--        <p>-->
-<!--          <span itemprop="priceCurrency" content="RUB"></span>-->
-<!--          <span itemprop="price">{{sku?.price}}</span> ₽-->
-<!--        </p>-->
-<!--      </div>-->
-<!--    </p>-->
+
     <div class="mt-auto mb-2 flex gap-2 justify-between">
-<!--      <UButton v-if="product?.sku[0]?.price" icon="i-solar-cart-3-outline" class="btn btn-primary mb-2 md:mb-0" @click.prevent="addToCart">Добавить</UButton>-->
-<!--      <UButton v-else class="btn btn-primary" @click.prevent="emit('openModal', 'Оставьте заявку')">Оставить заявку</UButton>-->
-      <button v-if="product?.sku[0]?.price" class="btn bg-gray-100">от {{product?.sku[0]?.price}} ₽</button>
-      <button v-if="product?.sku[0]?.price" class="btn btn-primary">Подробнее</button>
+      <div v-if="getMinPrice" class="price-container">
+        <!-- Если есть активная скидка -->
+        <button v-if="hasActiveDiscount" class="btn btn-gray discount-price">
+          <span class="original-price">от {{ getOriginalPrice }} ₽</span>
+          <span class="current-price">от {{ getMinPrice }} ₽</span>
+        </button>
+        <!-- Если нет скидки -->
+        <button v-else class="btn btn-gray">от {{ getMinPrice }} ₽</button>
+      </div>
+      <button class="btn btn-primary">Подробнее</button>
     </div>
 
   </li>
 </template>
 
 <style scoped>
+
+.discount-price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  position: relative;
+}
+
+.original-price {
+  font-size: 12px;
+  position: relative;
+  display: inline-block;
+}
+.original-price::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff4444, #ff6666);
+  transform: translateY(-50%);
+  border-radius: 1px;
+}
 
 </style>

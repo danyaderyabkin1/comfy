@@ -41,6 +41,16 @@
     max-width: 1400px;
     margin: 0 auto;
     gap: 100px;
+    &.tree {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 50px;
+
+      li {
+        &:nth-child(n + 5) {
+          display: flex;
+        }
+      }
+    }
     @include xxl-desktop {
       gap: 50px;
     }

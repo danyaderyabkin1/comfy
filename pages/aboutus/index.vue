@@ -11,32 +11,49 @@ useHead({
 })
 
 useSeoMeta({
-  title: 'О нашей компании Otellica',
-  ogTitle: 'О нашей компании Otellica',
-  description: 'История компании “Отелика” началась с желания создать пространства, в которых гости могли бы чувствовать себя как дома',
-  ogDescription: 'История компании “Отелика” началась с желания создать пространства, в которых гости могли бы чувствовать себя как дома',
+  title: 'О нашей компании ',
+  ogTitle: 'О нашей компании ',
+  description: 'История компании началась с желания создать кровати',
+  ogDescription: 'История компании началась с желания создать кровати',
   ogImage: 'https://otellica.ru/assets/images/logo.webp',
 })
-const items = [
-  '/assets/images/about/dec_237670_page-0001-1-optimized.webp',
-  '/assets/images/about/00208__page-0001-optimized.webp',
-]
-const itemsThx = [
-  '/assets/images/about/photo_2025-02-27_10-42-39.jpg',
-  '/assets/images/about/photo_2025-02-27_10-42-44.jpg',
-  '/assets/images/about/IMG-20250313-WA01062.jpg',
-  '/assets/images/about/bl-ot-4.jpg',
-  '/assets/images/about/th1.webp',
-]
-const modal = ref(false)
+// const items = [
+//   '/assets/images/about/dec_237670_page-0001-1-optimized.webp',
+//   '/assets/images/about/00208__page-0001-optimized.webp',
+// ]
+// const itemsThx = [
+//   '/assets/images/about/photo_2025-02-27_10-42-39.jpg',
+//   '/assets/images/about/photo_2025-02-27_10-42-44.jpg',
+//   '/assets/images/about/IMG-20250313-WA01062.jpg',
+//   '/assets/images/about/bl-ot-4.jpg',
+//   '/assets/images/about/th1.webp',
+// ]
+// const modal = ref(false)
+const descriptionSecond = ref([
+  '- Широкий выбор моделей в каталоге',
+  '- Антивандальные ткани и экологичные материалы',
+  '- Вся продукция сертифицированна',
+])
 // const {fetchCategories} = useCategories();
 // const {data} = useAsyncData(() => fetchCategories(), {immediate: true});
 
 </script>
 
 <template>
-  <!--  <pre v-for="item in data">{{ item.name }} {{ item.id }}</pre>-->
   <main class="main">
+    <MainBanner
+        image="/assets/images/banners/c3b32af52d8d233c4681339b30392e8b97e07a03.webp"
+        title="Детская мебель из натуральных материалов"
+        description=""
+        :second-description="descriptionSecond"
+        :contrast="false"
+        :bg-color="true"
+        :not-main-banner="false"/>
+    <HomeCooperation/>
+    <HomeInv/>
+    <HomeKomfort/>
+    <MainNewsList/>
+    <HomeGallery/>
 <!--    <section id="about" class="about">-->
 <!--      <div class="container about__container">-->
 <!--        <h1>О компании</h1>-->
@@ -73,7 +90,7 @@ const modal = ref(false)
 <!--        </div>-->
 <!--      </div>-->
 <!--    </section>-->
-    <HomeAdvantages/>
+<!--    <HomeAdvantages/>-->
 <!--    <AboutSuggestion-->
 <!--        :key="1"-->
 <!--        :id-form="24"-->
@@ -116,14 +133,14 @@ const modal = ref(false)
 <!--      </div>-->
 <!--    </section>-->
 
-    <section class="control">
-      <div class="container control__container">
-        <h2 class="title"><span class="primary--border flex w-fit mx-auto">Контроль процессов</span> от входящего сырья до конечного продукта!</h2>
-        <ul class="control__list">
-          <AboutControl/>
-        </ul>
-      </div>
-    </section>
+<!--    <section class="control">-->
+<!--      <div class="container control__container">-->
+<!--        <h2 class="title"><span class="primary&#45;&#45;border flex w-fit mx-auto">Контроль процессов</span> от входящего сырья до конечного продукта!</h2>-->
+<!--        <ul class="control__list">-->
+<!--          <AboutControl/>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </section>-->
 
 <!--    <section id="thank" class="certificate">-->
 <!--      <div class="container">-->

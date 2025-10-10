@@ -57,7 +57,7 @@ const sendForm = async (e) => {
             <input type="hidden" name="form_id" value="37"/>
             <input
                 name="user_name[Ваше имя]"
-                class="bg-gray-100 appearance-none border-2 border-gray-100 rounded-xl w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-300"
+                class="bg-gray-100 appearance-none border-2 border-gray-100 rounded-xl w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-300"
                 type="text"
                 placeholder="Имя"
                 required>
@@ -71,7 +71,7 @@ const sendForm = async (e) => {
                  name="whatsapp[Телефон]"
                  v-model="phone"
                  v-maska="'+7 ### ### ##-##'"
-                 class="bg-gray-100 ps-10 p-2.5 appearance-none border-2 border-gray-100 rounded-3xl w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-300"
+                 class="bg-gray-100 ps-10 p-2.5 appearance-none border-2 border-gray-100 rounded-3xl w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-300"
                  id="inline-full-name"
                  type="text"
                  placeholder="+7"
@@ -79,9 +79,9 @@ const sendForm = async (e) => {
           <div v-if="errorMessage" class="error absolute text-[12px]">Ошибка: Введите номер полностью!</div>
         </div>
       </div>
-      <UCheckbox color="yellow" class="mt-1" v-model="checkbox">
+      <UCheckbox color="gray" class="mt-1" v-model="checkbox">
         <template #label>
-          <span class="text-white">Я даю согласие на обработку моих персональных данных ООО «ОТЕЛИКА» (ИНН 3700010049) в целях обработки заявки и обратной связи. <router-link class="text-yellow-500" target="_blank" to="/assets/policyO.pdf">Политика конфиденциальности</router-link> </span>
+          <span class="text-white">Я даю согласие на обработку моих персональных данных ООО «ОТЕЛИКА» (ИНН 3700010049) в целях обработки заявки и обратной связи. <router-link class="text-gray-500" target="_blank" to="/assets/policyO.pdf">Политика конфиденциальности</router-link> </span>
         </template>
       </UCheckbox>
       <div class="md:flex  md:items-center justify-center mb-3">

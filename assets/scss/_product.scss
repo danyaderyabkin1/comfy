@@ -130,6 +130,7 @@
       max-width: 520px;
       @include lg-desktop {
         justify-content: center;
+        max-width: none;
       }
       @include sm-mobile {
         justify-content: flex-start;

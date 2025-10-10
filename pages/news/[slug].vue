@@ -18,7 +18,7 @@ useSeoMeta({
   ogTitle: article.value?.meta_title,
   description: article.value?.meta_description,
   ogDescription: article.value?.meta_description,
-  ogImage: 'https://otellica.ru/assets/images/logo.webp',
+  // ogImage: 'https://otellica.ru/assets/images/logo.webp',
 })
 </script>
 
@@ -27,9 +27,16 @@ useSeoMeta({
     <section class="article">
       <div class="container article__container">
         <UBreadcrumb
-            class="mb-6"
-            divider="/"
-            :links="[{ label: 'Главная', to: '/' }, { label: 'Публикации', to: '/news' }, { label: article?.title }]"
+            class="mb-8 font-light text-gray-300 flex justify-center custom-breadcrumb"
+            divider="-"
+            :ui="{
+        label: 'text-gray-500 font-light',
+        separator: 'text-gray-300',
+        separatorIcon: 'text-gray-500',
+        list: 'text-gray-500',
+        link: 'text-gray-300'
+    }"
+            :links="[{ label: 'Comfy', to: '/' }, { label: 'Публикации', to: '/news' }, { label: article?.title }]"
         />
         <h1 class="title">{{ article?.title }}</h1>
         <div class="article__wrap">
@@ -42,9 +49,6 @@ useSeoMeta({
         </div>
       </div>
     </section>
+    <MainForm/>
   </main>
 </template>
-
-<style scoped>
-
-</style>

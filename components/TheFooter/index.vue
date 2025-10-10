@@ -59,6 +59,9 @@ const acceptCookieMain = () => cookieMain.value = '1'
             <li class="nav__item">
               <NuxtLink class="nav__link" to="/aboutus#about">Вступление</NuxtLink>
             </li>
+            <li class="nav__item">
+              <NuxtLink class="nav__link" to="/news">Публикации</NuxtLink>
+            </li>
 <!--            <li class="nav__item">-->
 <!--              <NuxtLink class="nav__link" to="/aboutus#sert">Сертификаты</NuxtLink>-->
 <!--            </li>-->
@@ -120,38 +123,38 @@ const acceptCookieMain = () => cookieMain.value = '1'
         <button class="cookie_accept btn btn-primary" @click.prevent="acceptCookieMain">Согласен</button>
       </p>
     </div>
-    <ul class="bottom-menu">
-      <li>
-        <RouterLink to="/krovati">
-          <img src="/assets/images/description/weave.svg" alt="">
-          <span>Текстиль</span>
-        </RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/mebel">
-          <img src="/assets/images/furniture-bed-svgrepo-com%201.svg" alt="">
-          <span>Мебель</span>
-        </RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/">
-          <img src="/assets/images/hm.svg" alt="">
-          <span>Главная</span>
-        </RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/aboutus">
-          <img src="/assets/images/about-description-help-svgrepo-com%201.svg" alt="">
-          <span>О компании</span>
-        </RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/aboutus#contacts">
-          <img src="/assets/images/SVGRepo_ic.svg" alt="">
-          <span>Контакты</span>
-        </RouterLink>
-      </li>
-    </ul>
+<!--    <ul class="bottom-menu">-->
+<!--      <li>-->
+<!--        <RouterLink to="/krovati">-->
+<!--          <img src="/assets/images/description/weave.svg" alt="">-->
+<!--          <span>Текстиль</span>-->
+<!--        </RouterLink>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <RouterLink to="/mebel">-->
+<!--          <img src="/assets/images/furniture-bed-svgrepo-com%201.svg" alt="">-->
+<!--          <span>Мебель</span>-->
+<!--        </RouterLink>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <RouterLink to="/">-->
+<!--          <img src="/assets/images/hm.svg" alt="">-->
+<!--          <span>Главная</span>-->
+<!--        </RouterLink>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <RouterLink to="/aboutus">-->
+<!--          <img src="/assets/images/about-description-help-svgrepo-com%201.svg" alt="">-->
+<!--          <span>О компании</span>-->
+<!--        </RouterLink>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <RouterLink to="/aboutus#contacts">-->
+<!--          <img src="/assets/images/SVGRepo_ic.svg" alt="">-->
+<!--          <span>Контакты</span>-->
+<!--        </RouterLink>-->
+<!--      </li>-->
+<!--    </ul>-->
   </footer>
   <div class="socials-right shadow-md">
     <a href="https://vk.com/comfy.meb37" target="_blank">

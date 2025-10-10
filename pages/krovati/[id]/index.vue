@@ -54,10 +54,11 @@ const totalPrice = computed(() => {
         total += selectedSku.price
       }
     } else {
-      // Если в группе ничего не выбрано, берем первую опцию (для размера по умолчанию)
+      // Если в группе ничего не выбрано, добавляем цену только для РАЗМЕРА по умолчанию
       if (group.title === 'Размер' && group.items.length > 0) {
         total += group.items[0].price
       }
+      // Для остальных групп (Цвет, Матрас) не добавляем цену, если не выбрано
     }
   })
 
@@ -66,8 +67,11 @@ const totalPrice = computed(() => {
 
 // Функция для выбора опции
 const selectOption = (groupId: string, sku: any) => {
-  // Если уже выбрана эта же опция - ничего не делаем
+  // Если уже выбрана эта же опция - снимаем выбор (кроме группы "Размер")
   if (selectedOptions.value[groupId] === sku.id) {
+    if (groupId !== 'Размер') {
+      selectedOptions.value[groupId] = null
+    }
     return
   }
 
@@ -82,31 +86,23 @@ const isOptionSelected = (groupId: string, sku: any) => {
     return selectedOptions.value[groupId] === sku.id
   }
 
-  // Если в группе нет выбранной опции, для размера выбираем первую по умолчанию
+  // Если в группе нет выбранной опции, для РАЗМЕРА выбираем первую по умолчанию
   if (groupId === 'Размер' && !selectedOptions.value[groupId]) {
     const sizeGroup = groupedSku.value.find(group => group.title === 'Размер')
     return sizeGroup?.items[0]?.id === sku.id
   }
 
+  // Для всех остальных групп по умолчанию ничего не выбрано
   return false
 }
 
-// Получить выбранную опцию для группы
-const getSelectedOption = (groupId: string) => {
-  const selectedId = selectedOptions.value[groupId]
-  if (selectedId) {
-    const group = groupedSku.value.find(g => g.title === groupId)
-    return group?.items.find(item => item.id === selectedId)
-  }
-  return null
-}
 
 // Инициализируем выбранные опции при загрузке
 watch(groupedSku, (newGroups) => {
   if (newGroups.length > 0) {
-    // Для каждой группы устанавливаем первую опцию по умолчанию
+    // Устанавливаем первую опцию по умолчанию ТОЛЬКО для группы "Размер"
     newGroups.forEach(group => {
-      if (group.items.length > 0 && !selectedOptions.value[group.title]) {
+      if (group.title === 'Размер' && group.items.length > 0 && !selectedOptions.value[group.title]) {
         selectedOptions.value[group.title] = group.items[0].id
       }
     })
@@ -114,7 +110,7 @@ watch(groupedSku, (newGroups) => {
 }, { immediate: true })
 
 const config = useRuntimeConfig()
-const canonicalUrl = `${config.public.siteUrl || 'https://otellica.ru'}${route.path}`
+const canonicalUrl = `${config.public.siteUrl}${route.path}`
 
 const productOpacity = computed(() => {
   const notInStockField = product.value?.fields?.find(
@@ -134,7 +130,7 @@ useSeoMeta({
   ogTitle: product.value?.meta_title ? product.value?.meta_title : product.value.title,
   description: product.value?.meta_description ? product.value?.meta_description : product.value.title,
   ogDescription: product.value?.meta_description ? product.value?.meta_description : product.value.title,
-  ogImage: 'https://otellica.ru/assets/images/logo.webp',
+  // ogImage: 'https://otellica.ru/assets/images/logo.webp',
 })
 
 if (!product.value) {
@@ -169,7 +165,7 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
               <img :src="product?.image" :alt="product?.preview_content" draggable="false">
             </a>
             <ul v-if="product?.gallery.length > 1" class="product__wrap-gallery">
-              <li v-for="image in product?.gallery">
+              <li v-for="image in product?.gallery" :key="image">
                 <a :href="image" data-fancybox="gallery">
                   <img :src="image" :alt="image" draggable="false">
                 </a>
@@ -210,7 +206,7 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
             <div v-if="product?.features.length" class="product__attributes">
               <p v-for="(product, i) in  product?.features" :key="i">{{product?.title}}: {{product?.description}} </p>
             </div>
-            <a href="#video" class="py-2 px-8 rounded-lg font-semibold bg-[#D0B6A7] text-white">Инструкция по сборке</a>
+            <a href="#video" class="flex w-fit py-2 px-8 rounded-lg font-semibold bg-[#D0B6A7] text-white">Инструкция по сборке</a>
           </div>
         </div>
       </div>
@@ -316,10 +312,6 @@ h2, h3 {
   color: #333;
 }
 
-ul {
-  list-style-type: disc;
-  padding-left: 20px;
-}
 
 .image-section img {
   width: 100%;

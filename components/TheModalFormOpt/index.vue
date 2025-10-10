@@ -69,7 +69,7 @@ onMounted(() => {
             <input type="hidden" name="form_id" value="38"/>
             <input
                 name="user_name[Ваше имя]"
-                class="bg-white appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-300"
+                class="bg-white appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-300"
                 id="inline-full-name"
                 type="text"
                 placeholder="Имя"
@@ -85,7 +85,7 @@ onMounted(() => {
                  name="whatsapp[Телефон]"
                  v-model="phone"
                  v-maska="'+7 ### ### ##-##'"
-                 class="bg-white ps-10 p-2.5 appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-300"
+                 class="bg-white ps-10 p-2.5 appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-300"
                  id="inline-full-name"
                  type="text"
                  placeholder="+7"
@@ -93,7 +93,7 @@ onMounted(() => {
           <div v-if="errorMessage" class="error absolute text-[12px]">Ошибка: Введите номер полностью!</div>
         </div>
         <div class="relative w-full">
-          <textarea class="bg-white appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-300" rows="5" placeholder="Сообщение"></textarea>
+          <textarea class="bg-white appearance-none border-2 border-gray-200 rounded-3xl w-full p-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-300" rows="5" placeholder="Сообщение"></textarea>
         </div>
       </div>
       <div class="md:flex  md:items-center mt-4 mb-3">
