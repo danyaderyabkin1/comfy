@@ -1,14 +1,47 @@
 .product {
-  padding: 4rem 0;
+  padding: 0 0 4rem;
 
   @include lg-desktop {
     padding: 2rem 0;
   }
 
   &__container {
+    h1 {
+      z-index: 1;
+      font-size: $fontBig;
+      font-weight: $fwMedium;
+    }
+
     @include lg-desktop {
       max-width: 100%;
     }
+  }
+
+  &__banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    position: relative;
+    margin-bottom: 2rem;
+    img {position: absolute;
+      width: 100% ;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 60px;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #00000040;
+      border-radius: 60px;
+      z-index: 1;
+    }
+
   }
 
   &__attributes {
@@ -26,7 +59,7 @@
 
   &__wrap {
     display: flex;
-    max-width: 1120px;
+    //max-width: 1120px;
     gap: 30px;
 
     @include lg-desktop {
@@ -40,7 +73,7 @@
 
     &-img {
       img {
-        max-width: 480px;
+        max-width: 520px;
         transition: opacity .4s;
         border-radius: 15px;
         @include lg-desktop {
@@ -60,11 +93,12 @@
 
     }
 
-    h1 {
+    h2 {
       text-transform: unset;
-      font-size: $fontLarge;
+      font-size: $fontBig;
       color: $black;
       margin-bottom: 1.5rem;
+      font-weight: $fwMedium;
       @include md-desktop {
         font-size: $fontDefault;
         font-weight: $fwBold;
@@ -84,7 +118,7 @@
         display: block;
         background-color: $grayBg;
         border-radius: 10px;
-        padding: 0.25rem 0.75rem;
+        padding: 0.25rem 2.75rem;
         font-weight: $fwBold;
       }
     }
@@ -93,6 +127,7 @@
       flex-wrap: wrap;
       gap: 1rem;
       margin-top: 1rem;
+      max-width: 520px;
       @include lg-desktop {
         justify-content: center;
       }

@@ -69,11 +69,11 @@ const acceptCookieMain = () => cookieMain.value = '1'
               <NuxtLink class="nav__link" to="/aboutus#pay">Оплата и доствка</NuxtLink>
             </li>
             <li class="nav__item">
-              <NuxtLink class="nav__link" to="/aboutus#contacts">Контактная информация</NuxtLink>
+              <NuxtLink class="nav__link" to="/contacts">Контактная информация</NuxtLink>
             </li>
-            <li class="nav__item">
-              <NuxtLink class="nav__link" to="/aboutus#contacts">Обратная связь</NuxtLink>
-            </li>
+<!--            <li class="nav__item">-->
+<!--              <NuxtLink class="nav__link" to="/aboutus#contacts">Обратная связь</NuxtLink>-->
+<!--            </li>-->
             <li class="nav__item">
               <NuxtLink class="nav__link" to="/politika">Персональные данные</NuxtLink>
             </li>
@@ -173,17 +173,29 @@ const acceptCookieMain = () => cookieMain.value = '1'
         </defs>
       </svg>
     </a>
-    <a href="https://yandex.ru/maps/-/CLFqa6k9" target="_blank">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_2_745)">
-          <path d="M14.2667 32V21.6187L7.33337 3.00001H10.8214L15.9334 17.356L21.8134 -0.00132751H25.02L17.476 21.736V31.9987L14.2667 32Z" fill="#E24642"/>
-        </g>
-        <defs>
-          <clipPath id="clip0_2_745">
-            <rect width="32" height="32" fill="white"/>
-          </clipPath>
-        </defs>
-      </svg>
+<!--    <a href="https://yandex.ru/maps/-/CLFqa6k9" target="_blank">-->
+<!--      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--        <g clip-path="url(#clip0_2_745)">-->
+<!--          <path d="M14.2667 32V21.6187L7.33337 3.00001H10.8214L15.9334 17.356L21.8134 -0.00132751H25.02L17.476 21.736V31.9987L14.2667 32Z" fill="#E24642"/>-->
+<!--        </g>-->
+<!--        <defs>-->
+<!--          <clipPath id="clip0_2_745">-->
+<!--            <rect width="32" height="32" fill="white"/>-->
+<!--          </clipPath>-->
+<!--        </defs>-->
+<!--      </svg>-->
+<!--    </a>-->
+    <a href="https://www.ozon.ru/brand/comfy-meb-100098308/?__rr=1" target="_blank">
+      <img class="w-8 h-8  rounded-full" src="/public/assets/images/about/c4e9bf55d8134a9f8e0a78968a5fb896747ea0d4.png" alt="ozon">
+    </a>
+    <a href="https://www.wildberries.ru/brands/comfy-meb" target="_blank">
+      <img class="w-8 h-8  rounded-full" src="/public/assets/images/about/2420fad29c780fcb5f42588d671df7c8da6ead15.png" alt="wb">
+    </a>
+    <a href="https://market.yandex.ru/business--comfy-meb/41471413" target="_blank">
+      <img class="w-8 h-8  rounded-full" src="/public/assets/images/about/b11d28bb16248ea516aa407ee955807d1f67e558.png" alt="market">
+    </a>
+    <a href="https://megamarket.ru/catalog/?q=comfy-meb&suggestionType=constructor" target="_blank">
+      <img class="w-8 h-8 rounded-full" src="/public/assets/images/about/1ddc6ce957049ccc5ac3c871f64fee742954df2d.png" alt="">
     </a>
   </div>
   <Teleport to="body">

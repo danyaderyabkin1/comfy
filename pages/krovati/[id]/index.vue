@@ -1,22 +1,128 @@
 <script setup lang="ts">
-import {useCategoriesBySlug} from "~/composables/useCategoryBySlug";
-import {usePostel} from "~/composables/constants/itemsTPostel";
-import {usePad} from "~/composables/constants/itemsTPad";
-import {useBlank} from "~/composables/constants/itemsTBlank";
-import {useMat} from "~/composables/constants/itemsTMat";
-import {useHat} from "~/composables/constants/itemsTHat";
-import {useTow} from "~/composables/constants/itemsTTow";
-
+const isOpen = ref(false)
+const {fetchProduct} = useProduct()
 const route = useRoute()
 const cleanPath = route.path.startsWith('/') ? route.path.slice(1) : route.path
-const {fetchCategories} = useCategoriesBySlug();
-const {data: category} = await useAsyncData(() => fetchCategories(cleanPath))
 
+const {data: product} = await useAsyncData(() => fetchProduct(cleanPath))
+
+// Выбранные опции - теперь храним объект с groupId и выбранным sku.id
+const selectedOptions = ref<Record<string, number>>({})
+
+// Функция для группировки SKU по description
+const groupedSku = computed(() => {
+  if (!product.value?.sku) return []
+
+  const groups = {}
+
+  product.value.sku.forEach(item => {
+    const groupName = item.description || 'Без категории'
+    if (!groups[groupName]) {
+      groups[groupName] = []
+    }
+    groups[groupName].push(item)
+  })
+
+  return Object.entries(groups).map(([title, items]) => ({
+    title,
+    items
+  }))
+})
+
+// Базовая цена (первый элемент с description "Размер")
+const basePrice = computed(() => {
+  const sizeGroup = groupedSku.value.find(group => group.title === 'Размер')
+  return sizeGroup?.items[0]?.price || product.value?.sku[0]?.price || 0
+})
+
+// ID базовой опции (первый размер)
+const baseOptionId = computed(() => {
+  const sizeGroup = groupedSku.value.find(group => group.title === 'Размер')
+  return sizeGroup?.items[0]?.id
+})
+
+// Итоговая цена с учетом выбранных опций
+const totalPrice = computed(() => {
+  let total = 0
+
+  // Проходим по всем группам и добавляем цену выбранной опции
+  groupedSku.value.forEach(group => {
+    const selectedOptionId = selectedOptions.value[group.title]
+    if (selectedOptionId) {
+      const selectedSku = group.items.find(item => item.id === selectedOptionId)
+      if (selectedSku) {
+        total += selectedSku.price
+      }
+    } else {
+      // Если в группе ничего не выбрано, берем первую опцию (для размера по умолчанию)
+      if (group.title === 'Размер' && group.items.length > 0) {
+        total += group.items[0].price
+      }
+    }
+  })
+
+  return total
+})
+
+// Функция для выбора опции
+const selectOption = (groupId: string, sku: any) => {
+  // Если уже выбрана эта же опция - ничего не делаем
+  if (selectedOptions.value[groupId] === sku.id) {
+    return
+  }
+
+  // Выбираем новую опцию (заменяем старую в этой группе)
+  selectedOptions.value[groupId] = sku.id
+}
+
+// Проверка, выбрана ли опция
+const isOptionSelected = (groupId: string, sku: any) => {
+  // Если в группе есть выбранная опция - проверяем по ID
+  if (selectedOptions.value[groupId]) {
+    return selectedOptions.value[groupId] === sku.id
+  }
+
+  // Если в группе нет выбранной опции, для размера выбираем первую по умолчанию
+  if (groupId === 'Размер' && !selectedOptions.value[groupId]) {
+    const sizeGroup = groupedSku.value.find(group => group.title === 'Размер')
+    return sizeGroup?.items[0]?.id === sku.id
+  }
+
+  return false
+}
+
+// Получить выбранную опцию для группы
+const getSelectedOption = (groupId: string) => {
+  const selectedId = selectedOptions.value[groupId]
+  if (selectedId) {
+    const group = groupedSku.value.find(g => g.title === groupId)
+    return group?.items.find(item => item.id === selectedId)
+  }
+  return null
+}
+
+// Инициализируем выбранные опции при загрузке
+watch(groupedSku, (newGroups) => {
+  if (newGroups.length > 0) {
+    // Для каждой группы устанавливаем первую опцию по умолчанию
+    newGroups.forEach(group => {
+      if (group.items.length > 0 && !selectedOptions.value[group.title]) {
+        selectedOptions.value[group.title] = group.items[0].id
+      }
+    })
+  }
+}, { immediate: true })
 
 const config = useRuntimeConfig()
 const canonicalUrl = `${config.public.siteUrl || 'https://otellica.ru'}${route.path}`
 
-// Добавляем мета-теги и каноническую ссылку
+const productOpacity = computed(() => {
+  const notInStockField = product.value?.fields?.find(
+      field => field.field_title === "notInStock"
+  );
+  return !!notInStockField;
+});
+
 useHead({
   link: [
     { rel: 'canonical', href: canonicalUrl }
@@ -24,131 +130,205 @@ useHead({
 })
 
 useSeoMeta({
-  title: category.value?.meta_title,
-  ogTitle: category.value?.meta_title,
-  description: category.value?.meta_description,
-  ogDescription: category.value?.meta_description,
+  title: product.value?.meta_title ? product.value?.meta_title : product.value.title,
+  ogTitle: product.value?.meta_title ? product.value?.meta_title : product.value.title,
+  description: product.value?.meta_description ? product.value?.meta_description : product.value.title,
+  ogDescription: product.value?.meta_description ? product.value?.meta_description : product.value.title,
   ogImage: 'https://otellica.ru/assets/images/logo.webp',
 })
 
-const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
-
-const {itemsPostelEdge, itemsPostelChoice} = usePostel()
-const {itemsPadEdge, itemsPadChoice} = usePad()
-const {itemsBlankEdge, itemsBlankChoice} = useBlank()
-const {itemsMatEdge, itemsMatChoice} = useMat()
-const {itemsHatEdge, itemsHatChoice} = useHat()
-const {itemsTowEdge, itemsTowChoice} = useTow()
+if (!product.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Страница не найдена!'
+  })
+}
+const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
 </script>
 
 <template>
   <main class="main">
-    <MainBanner
-        :title="cleanText(category?.preview_content)"
-        :description="cleanText(category?.content)"
-        :not-main-banner="true"
-        :image="category?.image"/>
-    <ProductsList
-        :title="category?.title"
-        :category-id="category?.id"
-        :grid-four="true"
-    />
+    <section class="product">
+      <div class="container product__container">
+        <h1>{{product?.title}}</h1>
+        <UBreadcrumb
+            class="mb-8 text-gray-300 flex custom-breadcrumb"
+            divider="-"
+            :ui="{
+                    label: 'text-gray-500 font-light',
+                    separator: 'text-gray-300',
+                    separatorIcon: 'text-gray-500',
+                    list: 'text-gray-500',
+                    link: 'text-gray-300'
+                }"
+            :links="[{ label: 'Comfy', to: '/' }, {label: 'Кровати', to: '/krovati'}, { label: cleanText(product?.title) }]"
+        />
+        <div class="product__wrap">
+          <div class="product__wrap-img">
+            <a :href="product?.image" data-fancybox="gallery">
+              <img :src="product?.image" :alt="product?.preview_content" draggable="false">
+            </a>
+            <ul v-if="product?.gallery.length > 1" class="product__wrap-gallery">
+              <li v-for="image in product?.gallery">
+                <a :href="image" data-fancybox="gallery">
+                  <img :src="image" :alt="image" draggable="false">
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="flex-1">
+            <h2>{{product?.title}}</h2>
 
-    <MainEdge
-        v-if="category?.meta_keywords === 'postel'"
-        title="Преимущества"
-        :grid-four="true"
-        :items="itemsPostelEdge"
-    />
+            <div class="flex items-start gap-24">
+              <strong>
+                <span>{{ totalPrice }} ₽</span>
+              </strong>
+              <div class="product__btns">
+                <button class="btn btn-primary" @click.prevent="isOpen = !isOpen">Заказать</button>
+              </div>
+            </div>
 
-    <MainEdge
-        v-if="category?.meta_keywords === 'pad'"
-        title="Преимущества"
-        image="125f307b9d93307c0516660f69ab3098.webp"
-        :grid-four="true"
-        :items="itemsPadEdge"
-    />
+            <div v-if="groupedSku.length" class="sku-groups">
+              <div v-for="group in groupedSku" :key="group.title" class="sku-group">
+                <strong class="sku-group__title">{{ group.title }}</strong>
+                <div class="sku-group__items flex">
+                  <button
+                      v-for="sku in group.items"
+                      :key="sku.id"
+                      class="sku-item bg-gray-100"
+                      :class="{ 'sku-item--selected': isOptionSelected(group.title, sku) }"
+                      @click="selectOption(group.title, sku)"
+                      type="button"
+                  >
+                    <span class="sku-title">{{ sku.title }}</span>
+<!--                    <span v-if="sku.price > 0" class="sku-price">+{{ sku.price }} ₽</span>-->
+                  </button>
+                </div>
+              </div>
+            </div>
 
-    <MainEdge
-        v-if="category?.meta_keywords === 'blank'"
-        title="Преимущества"
-        image="125f307b9d93307c0516660f69ab3098.webp"
-        :grid-four="false"
-        :items="itemsBlankEdge"
-    />
+            <div v-if="product?.features.length" class="product__attributes">
+              <p v-for="(product, i) in  product?.features" :key="i">{{product?.title}}: {{product?.description}} </p>
+            </div>
+            <a href="#video" class="py-2 px-8 rounded-lg font-semibold bg-[#D0B6A7] text-white">Инструкция по сборке</a>
+          </div>
+        </div>
+      </div>
+      <div v-if="product?.content" class="container product__container">
+        <div v-html="product?.content"></div>
+      </div>
+<!--      <ProductDescription/>-->
 
-    <MainEdge
-        v-if="category?.meta_keywords === 'mat'"
-        title="Преимущества"
-        image="125f307b9d93307c0516660f69ab3098.webp"
-        :grid-four="false"
-        :items="itemsMatEdge"
-    />
-
-    <MainEdge
-        v-if="category?.meta_keywords === 'hat'"
-        title="Преимущества"
-        image="125f307b9d93307c0516660f69ab3098.webp"
-        :grid-four="false"
-        :items="itemsHatEdge"
-    />
-
-    <MainEdge
-        v-if="category?.meta_keywords === 'tow'"
-        title="Преимущества"
-        image="125f307b9d93307c0516660f69ab3098.webp"
-        :grid-four="false"
-        :items="itemsTowEdge"
-    />
-    <TheOptForm/>
-
-    <MainChoice
-        v-if="category?.meta_keywords === 'postel'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР ПОСТЕЛЬНОГО БЕЛЬЯ</strong> ЭТО УДОБСТВО ВАШИХ ГОСТЕЙ"
-        image="post-b-n2-1-_1_.webp"
-        :reverse="true"
-        :items="itemsPostelChoice"
-    />
-    <MainChoice
-        v-if="category?.meta_keywords === 'pad'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР ПОДУШЕК</strong> ДЛЯ УДОБСТВА ВАШИХ ГОСТЕЙ"
-        image="podushki-check.jpeg"
-        :reverse="true"
-        :items="itemsPadChoice"
-    />
-    <MainChoice
-        v-if="category?.meta_keywords === 'blank'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР ОДЕЯЛ</strong> ДЛЯ УДОБСТВА ВАШИХ ГОСТЕЙ"
-        image="young_beautiful_woman_in_blue_pajamas_sitting_on_bed_resting_on-scaled 1 (1).jpg"
-        :reverse="true"
-        :items="itemsBlankChoice"
-    />
-    <MainChoice
-        v-if="category?.meta_keywords === 'mat'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР НАМАТРАСНИКОВ</strong> ДЛЯ УДОБСТВА ВАШИХ ГОСТЕЙ"
-        image="young_beautiful_woman_blue_pajamas_sitting_bed_waking_up_stretching-scaled-_1_.webp"
-        :reverse="true"
-        :items="itemsMatChoice"
-    />
-    <MainChoice
-        v-if="category?.meta_keywords === 'hat'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР Халатов</strong> ДЛЯ УДОБСТВА ВАШИХ ГОСТЕЙ"
-        image="halaty-check.jpeg"
-        :reverse="true"
-        :items="itemsHatChoice"
-    />
-    <MainChoice
-        v-if="category?.meta_keywords === 'tow'"
-        title="<strong>ПРАВИЛЬНЫЙ ВЫБОР ПОЛОТЕНЕЦ</strong> ДЛЯ УДОБСТВА ВАШИХ ГОСТЕЙ"
-        image="polotenca-check.jpeg"
-        :reverse="true"
-        :items="itemsTowChoice"
-    />
+      <UModal v-model="isOpen"
+              :ui="{ container: 'items-start pt-14 bg-white sm:bg-gray-50/50', shadow: 'shadow-none sm:shadow-lg', padding: 'p-0 sm:p-0', rounded: 'rounded-none sm:rounded-lg' }"
+              prevent-close
+              class="modal">
+        <div class="px-6 py-10">
+          <UButton
+              color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1 modal__close"
+              @click="isOpen = false"/>
+          <TheModalForm :form-id="38" title="Сделать заказ"/>
+        </div>
+      </UModal>
+    </section>
+    <section id="video" class="video">
+      <div class="container max-w-5xl">
+        <h3 class="text-center text-3xl mb-6">Видеоинструкция по сборке</h3>
+        <p class="mb-0 w-100 position-relative" v-html="product?.video_url"></p>
+      </div>
+    </section>
     <MainForm/>
-
   </main>
 </template>
 
 <style scoped>
+.sku-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 2rem 0;
+}
 
+.sku-group__title {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sku-group__items {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sku-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #F3F3F3;
+  background-color: #F3F3F3;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.sku-item:hover {
+  border-color: #c5c5c5;
+  background: #f9f9f9;
+}
+
+.sku-item--selected {
+  border-color: #D0B6A7;
+  background: #f8f3f0;
+}
+
+.sku-title {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.sku-price {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-left: 8px;
+}
+
+.sku-item--selected .sku-price {
+  color: #D0B6A7;
+}
+
+
+.description-box, .bed-info, .dimensions {
+  margin-bottom: 20px;
+  padding: 35px;
+  border-radius: 60px 60px 0 0;
+}
+
+.bedroom-img {
+  border-radius: 60px;
+}
+
+h2, h3 {
+  color: #333;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.image-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.dimensions p {
+  margin: 5px 0;
+}
 </style>

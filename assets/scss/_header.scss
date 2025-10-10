@@ -262,7 +262,7 @@
 
 
         &.router-link-active {
-          color: $primaryColorDark;
+          color: #C7B6A6;
         }
       }
     }
@@ -288,7 +288,7 @@
     }
 
     &.router-link-active {
-      border-bottom: 3px solid $primaryColorDark;
+      border-bottom: 3px solid #C7B6A6;
     }
   }
 }

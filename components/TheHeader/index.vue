@@ -6,12 +6,13 @@ const scrollY = ref(0);
 
 
 const {fetchCategories} = useCategories()
+const {fetchProducts} = useProducts()
 const { data: mainCategories } = await useAsyncData('categories', async () => {
   const categories = await fetchCategories();
   const withSubs = await Promise.all(
       categories.map(async cat => ({
         ...cat,
-        subCategories: await fetchCategories(cat.id)
+        subCategories: await fetchProducts(cat.id)
       }))
   );
   return { categories: withSubs };
@@ -55,6 +56,10 @@ watch(() => route.path, () => {
           </li>
           <li class="nav__item">
             <NuxtLink class="nav__link" to="/reviews">Отзывы
+            </NuxtLink>
+          </li>
+          <li class="nav__item">
+            <NuxtLink class="nav__link" to="/contacts">Контакты
             </NuxtLink>
           </li>
           <li class="nav__item">

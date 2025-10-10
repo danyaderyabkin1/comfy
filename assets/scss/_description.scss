@@ -1,5 +1,15 @@
 .description {
   padding: 3rem 0;
+  &__container {
+    background-color: $white;
+    border-radius: 50px;
+    @include sm-mobile {
+      border-radius: 20px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  }
+
   @include sm-tablets {
     padding: 2rem 0;
   }
@@ -43,7 +53,7 @@
         width: 100px;
         height: 100px;
         flex-shrink: 0;
-        border: 1px solid $primaryColor;
+        border: 1px solid #C7B6A6;
         border-radius: 50%;
 @include sm-mobile {
   width: 60px;

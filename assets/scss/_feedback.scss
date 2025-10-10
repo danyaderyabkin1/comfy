@@ -1,12 +1,22 @@
 .feedback {
   padding: 3rem;
-  background-image: url("/public/assets/images/bg-contacts.webp");
+  //background-image: url("/public/assets/images/bg-contacts.webp");
   background-repeat: no-repeat;
   background-position: top;
   background-size: cover;
   border-radius: 20px;
   margin: 3rem 0;
   min-height: 530px;
+  @include lg-desktop {
+    min-height: auto;
+  }
+  img {
+    width: 330px;
+    @include lg-desktop {
+      display: none;
+    }
+  }
+
   @include sm-tablets {
     padding: 1rem;
     min-height: auto;
@@ -21,9 +31,17 @@
   }
 
   &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: radial-gradient(86.43% 434.79% at 13.57% 33.88%, #FAF9F7 0%, #DFDBD8 100%);
+    border-radius: 60px;
+    padding: 0;
     @include sm-tablets {
       padding: 0;
-
+    }
+    @include sm-mobile {
+      border-radius: 20px;
     }
   }
 
@@ -36,7 +54,7 @@
     }
     .btn {
       position: relative;
-      right: 30px;
+      //right: 30px;
       padding: .5rem 4rem;
       font-weight: $fwExtraBold;
       @include sm-tablets {
@@ -59,10 +77,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
     background-color: transparent;
     border-radius: 30px;
     padding: 1.5rem;
-    margin: 0 auto;
+    max-width: 600px;
     @include sm-mobile {
       border-radius: 0;
     }

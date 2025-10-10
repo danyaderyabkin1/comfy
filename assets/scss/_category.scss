@@ -31,7 +31,6 @@
   &__filter {
     align-items: center;
     display: flex;
-    justify-content: flex-end;
     gap: 12px;
     margin-bottom: 1rem;
     @include sm-mobile {

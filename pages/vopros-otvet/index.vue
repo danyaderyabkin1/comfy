@@ -93,6 +93,7 @@ const formatAnswer = (text: string) => {
         </div>
       </UContainer>
     </section>
+    <MainForm/>
   </main>
 </template>
 

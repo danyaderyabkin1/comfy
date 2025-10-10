@@ -72,16 +72,28 @@ watch(() => route.query, (newQuery) => {
 <template>
   <div class="category__filter">
     <button @click="emit('openFilter')" class="btn btn-primary">Фильтр</button>
-    <span class="gray-text font-semibold">Сортировать:</span>
     <button
         :class="{active: sortBy === sort.name}"
         v-for="(sort, i) in sortQuery"
         :key="i"
         @click.prevent="sorting(sort.name)"
-        class="p-0 font-semibold my-radio__label gray-text"
+        class="p-0 btn btn-white font-semibold my-radio__label gray-text"
     >
       {{sort.label}}
       <span v-if="sortBy === sort.name">{{sortDir === 'asc' ? '▲' : '▼'}}</span>
     </button>
   </div>
 </template>
+<style scoped>
+.btn-white {
+  color: #000;
+  border-radius: 15px;
+}
+
+@media (any-hover: hover) {
+  .btn-white:hover  {
+    box-shadow: none;
+    background-color: #f7f7f7;
+  }
+}
+</style>

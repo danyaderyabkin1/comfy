@@ -1,47 +1,122 @@
 <script setup lang="ts">
 import {useCategoriesBySlug} from "~/composables/useCategoryBySlug";
-
-
-const route = useRoute()
-const cleanPath = route.path.startsWith('/') ? route.path.slice(1) : route.path
-const {fetchCategories} = useCategoriesBySlug();
-const {data: category} = await useAsyncData(() => fetchCategories(cleanPath))
-
+import {useTow} from "~/composables/constants/itemsTTow";
+import {useDescriptions} from "~/composables/constants/itemsDescription";
+const {descriptionItems} = useDescriptions()
 const config = useRuntimeConfig()
-const canonicalUrl = `${config.public.siteUrl || 'https://otellica.ru'}${route.path}`
+const route = useRoute()
+const cleanPath = computed(() => {
+  return route.path.startsWith('/') ? route.path.slice(1) : route.path
+})
+const {fetchCategories} = useCategoriesBySlug();
+// const {fetchWidgetByCode} = useWidgets();
 
-// Добавляем мета-теги и каноническую ссылку
+// Автоматически перезагружает при изменении route.name
+// const { data: widget } = useAsyncData(
+//     () => `widget-${route.params.id}`,
+//     () => fetchWidgetByCode(route.params.id)
+// )
+const { data: category } = await useAsyncData(
+    `category-${cleanPath.value}`, // Уникальный ключ для каждой страницы
+    () => fetchCategories(cleanPath.value),
+    {
+      watch: [cleanPath] // Автоматически перезапускаем при изменении
+    }
+)
+
 useHead({
-  link: [
-    { rel: 'canonical', href: canonicalUrl }
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Главная",
+            "item": `${config.public.siteUrl}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Текстиль",
+            "item": `${config.public.siteUrl}/tekstil`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": category.value.title,
+            "item": `${config.public.siteUrl}${route.path}`
+          }
+        ]
+      })
+    }
   ]
 })
 
 useSeoMeta({
-  title: 'Текстиль для отелей и гостиниц - Otellica',
-  ogTitle: 'Текстиль для отелей и гостиниц - Otellica',
-  description: 'Любой текстиль для отелей и гостиниц, большой выбор различного текстиля. Комфорт за которым гости будут возвращаться снова.',
-  ogDescription: 'Любой текстиль для отелей и гостиниц, большой выбор различного текстиля. Комфорт за которым гости будут возвращаться снова.',
-  ogImage: 'https://otellica.ru/assets/images/logo.webp',
+  title: category.value.meta_title,
+  description: category.value.meta_description,
+  ogTitle: category.value.meta_title,
+  ogDescription: category.value.meta_description,
+  ogImage: category.value.image,
+  ogUrl: `${config.public.siteUrl}${route.path}`,
+  ogSiteName: `${config.public.siteName}`,
+  ogType: 'website',
+  ogLocale: 'ru_RU'
 })
-
-const cleanText = (html: string | null) => html.replace(/<[^>]*>/g, '')
+const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
 </script>
 
 <template>
   <main class="main">
-    <MainBanner
+    <div class="container">
+      <h1>{{cleanText(category?.preview_content)}}</h1>
+      <UBreadcrumb
+          class="text-gray-300 flex  custom-breadcrumb"
+          divider="-"
+          :ui="{
+        label: 'text-gray-500 font-light',
+        separator: 'text-gray-300',
+        separatorIcon: 'text-gray-500',
+        list: 'text-gray-500',
+        link: 'text-gray-300'
+    }"
+          :links="[{ label: 'Comfy', to: '/' }, {label: 'Кровати'}]"
+      />
+    </div>
+<!--    <MainBanner-->
+<!--        :title="cleanText(category?.preview_content)"-->
+<!--        :description="cleanText(category?.content)"-->
+<!--        :not-main-banner="true"-->
+<!--        :bg-color="true"-->
+<!--        :contrast="true"-->
+<!--        :image="category?.image"/>-->
+
+    <!--    <Category :title="category?.title" :id="category?.id"/>-->
+    <ProductsList
+        :title="category?.title"
+        :category-id="category?.id"
+        :grid-four="true"
+    />
+    <MainDescription title="Comfy - детская мебель это" :list-items="descriptionItems"/>
+    <MainChoice
+        :title="cleanText(category?.content)"
         :image="category?.image"
-        :title="cleanText(category?.preview_content)"
-        :description="cleanText(category?.content)"
-        :not-main-banner='true'/>
-<!--    <TheCategory :title="category?.subTitle" :category-id="category?.id" :custom-grid="true"/>-->
-<!--    <MainDescription title="Причины не экономить на текстиле" :list-items="descriptionItems"/>-->
-    <!--    <HomeCooperation title="ПОЧЕМУ ВАМ БУДЕТ КОМФОРТНО С OTELLICA?" :gray-bg="false"/>-->
+        :reverse="true"
+    />
 <!--    <MainForm/>-->
+    <MainNewsList/>
   </main>
 </template>
 
 <style scoped>
-
+.products {
+  padding: 0;
+}
+main {
+  background-color: #EFF0F2;
+}
 </style>

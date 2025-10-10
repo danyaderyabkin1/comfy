@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const {fetchCategories} = useCategories()
+const {fetchProducts} = useProducts()
 const { data: mainCategories } = await useAsyncData('categoriesFooter', async () => {
   const categories = await fetchCategories();
   const filteredCategories = categories.filter(cat => cat.id !== 13 && cat.id !== 14);
   return await Promise.all(
       filteredCategories.map(async cat => ({
         id: cat.id,
-        subCategories: await fetchCategories(cat.id)
+        subCategories: await fetchProducts(cat.id)
       }))
   );
 });
