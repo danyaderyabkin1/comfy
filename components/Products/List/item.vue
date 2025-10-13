@@ -116,8 +116,12 @@ const addToCart = async () => {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 0 7px;
   position: relative;
+}
+
+.price-container {
+  padding: 0;
 }
 
 .original-price {

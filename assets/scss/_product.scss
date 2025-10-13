@@ -73,7 +73,7 @@
 
     &-img {
       img {
-        max-width: 520px;
+        max-width: 580px;
         transition: opacity .4s;
         border-radius: 15px;
         @include lg-desktop {
@@ -127,7 +127,7 @@
       flex-wrap: wrap;
       gap: 1rem;
       margin-top: 1rem;
-      max-width: 520px;
+      max-width: 580px;
       @include lg-desktop {
         justify-content: center;
         max-width: none;

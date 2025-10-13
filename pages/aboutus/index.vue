@@ -42,7 +42,13 @@ const descriptionSecond = ref([
 <template>
   <main class="main">
     <MainBanner
-        image="/assets/images/banners/c3b32af52d8d233c4681339b30392e8b97e07a03.webp"
+        :image="[
+          '/assets/images/banners/7fd4a21d9940dbe7640d0d68755fcb3e3b4cd456.webp',
+          '/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp',
+          '/assets/images/banners/7fd4a21d9940dbe7640d0d68755fcb3e3b4cd456.webp',
+          '/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp',
+          '/assets/images/banners/7fd4a21d9940dbe7640d0d68755fcb3e3b4cd456.webp',
+        ]"
         title="Детская мебель из натуральных материалов"
         description=""
         :second-description="descriptionSecond"
@@ -51,6 +57,7 @@ const descriptionSecond = ref([
         :not-main-banner="false"/>
     <HomeCooperation/>
     <HomeInv/>
+    <MainSwiperBanner/>
     <HomeKomfort/>
     <MainNewsList/>
     <HomeGallery/>

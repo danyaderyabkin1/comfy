@@ -241,7 +241,7 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
                       type="button"
                   >
                     <span class="sku-title">{{ sku.title }}</span>
-<!--                    <span v-if="sku.price > 0" class="sku-price">+{{ sku.price }} ₽</span>-->
+                    <!--                    <span v-if="sku.price > 0" class="sku-price">+{{ sku.price }} ₽</span>-->
                   </button>
                 </div>
               </div>
@@ -257,7 +257,7 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
       <div v-if="product?.content" class="container product__container">
         <div v-html="product?.content"></div>
       </div>
-<!--      <ProductDescription/>-->
+      <!--      <ProductDescription/>-->
 
       <UModal v-model="isOpen"
               :ui="{ container: 'items-start pt-14 bg-white sm:bg-gray-50/50', shadow: 'shadow-none sm:shadow-lg', padding: 'p-0 sm:p-0', rounded: 'rounded-none sm:rounded-lg' }"

@@ -32,7 +32,7 @@ function showToast(title, color) {
 
 
 const {fetchCategories} = useCategories()
-const { data: mainCategories } = await useAsyncData('categories', async () => {
+const { data: mainCategories } = await useAsyncData('categories-products', async () => {
   const categories = await fetchCategories();
   const withSubs = await Promise.all(
       categories.map(async cat => ({

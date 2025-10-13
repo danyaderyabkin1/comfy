@@ -13,39 +13,6 @@ const descriptionSecond = ref([
   '- Вся продукция сертифицированна',
 ])
 
-const itemsClients = ref([
-  {
-    id: 1,
-    img: 'big-logo-400x401.webp',
-    link: 'https://malamut-land.ru/'
-  },
-  {
-    id: 2,
-    img: '6568454.webp',
-    link: 'https://berejkihall.ru/'
-  },
-  {
-    id: 3,
-    img: 'hMw1vPZugEFRQVErdYn7RQursDW6tIJe6cemmZairdPPKvbOpQB0GceuF1avpxPClcf_6NntlnsgFQls8UVbce0v.webp',
-    link: 'https://vk.com/ax_alta'
-  },
-  {
-    id: 4,
-    img: 'logo.svg',
-    link: 'https://imera.ru/'
-  },
-  {
-    id: 5,
-    img: 'logo_utes.svg',
-    link: 'https://uteshotel.com/aktsii/'
-  },
-  {
-    id: 6,
-    img: '_logo_vector_2_RGB_b.svg',
-    link: 'https://chigish.ru/'
-  }
-])
-
 // Состояние активного таба
 const activeTab = ref('sales')
 
@@ -58,7 +25,14 @@ const setActiveTab = (tab: string) => {
 <template>
   <main class="main bg-[#EFF0F2]">
     <MainBanner
-        image="/assets/images/banners/c3b32af52d8d233c4681339b30392e8b97e07a03.webp"
+        :image="[
+          '/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp',
+          '/assets/images/banners/7fd4a21d9940dbe7640d0d68755fcb3e3b4cd456.webp',
+          '/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp',
+          '/assets/images/banners/7fd4a21d9940dbe7640d0d68755fcb3e3b4cd456.webp',
+          '/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp',
+
+        ]"
         title="Детская мебель из натуральных материалов"
         description=""
         :second-description="descriptionSecond"

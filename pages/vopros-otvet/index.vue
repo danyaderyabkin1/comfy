@@ -95,6 +95,9 @@ const formatAnswer = (text: string) => {
     </section>
     <MainForm/>
   </main>
+
+
+
 </template>
 
 <style scoped>

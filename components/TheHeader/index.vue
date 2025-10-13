@@ -7,7 +7,7 @@ const scrollY = ref(0);
 
 const {fetchCategories} = useCategories()
 const {fetchProducts} = useProducts()
-const { data: mainCategories } = await useAsyncData('categories', async () => {
+const { data: mainCategories } = await useLazyAsyncData('categories', async () => {
   const categories = await fetchCategories();
   const withSubs = await Promise.all(
       categories.map(async cat => ({
@@ -37,11 +37,10 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <header class="header" :style="route.path !== '/' ? 'background-color: white;' : ''" :class="{circle: scrollY > 25}">
+  <header class="header" :class="{circle: scrollY > 25}">
     <div class="container header__container">
       <NuxtLink class="header__link" to="/">
         <img class="header__logo" src="/assets/images/logo.webp" alt="logo">
-<!--        <span>С Вами в любой точке страны</span>-->
       </NuxtLink>
       <nav class="nav">
         <ul class="nav__list">
