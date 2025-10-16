@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Swiper, SwiperSlide} from 'swiper/vue'
-import {Autoplay, Pagination} from 'swiper/modules'
+import {Autoplay, EffectFade, Pagination} from 'swiper/modules'
 
 const isOpen = ref(false)
 
@@ -8,8 +8,8 @@ const isOpen = ref(false)
 const slides = [
   {
     title: 'Подберите для себя самую удобную кровать и получите скидку 5%',
-    image: '/assets/images/banners/3c4e0cb1e4e98f184f8172195d278e4adc1cf612.webp',
-    mobileImage: '/assets/images/banners/3c4e0cb1e4e98f184f8172195d278e4adc1cf612.webp', // можно указать другое изображение для мобильных
+    image: '/assets/images/banners/3c4e0cb1e4e98f184f8172195d278e4adc1cf612.png',
+    mobileImage: '/assets/images/banners/3c4e0cb1e4e98f184f8172195d278e4adc1cf612.png', // можно указать другое изображение для мобильных
     icon: '/assets/images/description/sale-percent_svgrepo.com.svg',
     link: '/krovati',
     linkText: 'Смотреть кровати'
@@ -26,9 +26,13 @@ const slides = [
 
 // Настройки слайдера
 const swiperOptions = {
-  modules: [Autoplay, Pagination],
+  modules: [Autoplay, Pagination, EffectFade],
   slidesPerView: 1,
   spaceBetween: 0,
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
   loop: true,
   pagination: {
     clickable: true,
@@ -43,6 +47,9 @@ const swiperOptions = {
         <Swiper
             v-bind="swiperOptions"
             class="main-swiper"
+            :effect="'fade'"
+            :fadeEffect="{crossFade: true}"
+
         >
           <SwiperSlide v-for="(slide, index) in slides" :key="index">
             <div class="slide-wrapper">
@@ -257,7 +264,7 @@ const swiperOptions = {
   .hero {
     height: 45vh;
     min-height: 350px;
-    padding: 0.25rem 0.5rem;
+    padding: 1.25rem 0.5rem;
   }
 
 

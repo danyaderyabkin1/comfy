@@ -25,8 +25,8 @@
             <a class="sm:mt-10" href="/assets/images/banners/8a199f6ea83a77bc31bef71c2d6ced592b80fc56.webp" data-fancybox="gallery">
               <img src="/public/assets/images/banners/8a199f6ea83a77bc31bef71c2d6ced592b80fc56.webp" alt="Room" class="sm:shadow-xl md:w-[390px] md:h-[310px] rounded-[50px] sm:rounded-[100px] object-cover">
             </a>
-            <a href="/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp" data-fancybox="gallery">
-              <img src="/public/assets/images/banners/9558445494985a26c38421efa68e6a875f826486.webp" alt="Room" class="sm:shadow-xl md:w-[490px] md:h-[300px] rounded-[50px] sm:rounded-[100px] object-cover">
+            <a href="/assets/images/banners/c3b32af52d8d233c4681339b30392e8b97e07a03.jpg" data-fancybox="gallery">
+              <img src="/public/assets/images/banners/c3b32af52d8d233c4681339b30392e8b97e07a03.jpg" alt="Room" class="sm:shadow-xl md:w-[490px] md:h-[300px] rounded-[50px] sm:rounded-[100px] object-cover">
             </a>
           </div>
         </div>

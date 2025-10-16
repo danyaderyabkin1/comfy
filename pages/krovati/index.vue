@@ -73,7 +73,6 @@ const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
 <template>
   <main class="main">
     <div class="container">
-      <h1>{{cleanText(category?.preview_content)}}</h1>
       <UBreadcrumb
           class="text-gray-300 flex  custom-breadcrumb"
           divider="-"
@@ -86,6 +85,7 @@ const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
     }"
           :links="[{ label: 'Comfy', to: '/' }, {label: 'Кровати'}]"
       />
+      <h1>{{cleanText(category?.title || '')}}</h1>
     </div>
 <!--    <MainBanner-->
 <!--        :title="cleanText(category?.preview_content)"-->

@@ -56,10 +56,6 @@ watch(() => route.path, () => {
             </ClientOnly>
           </li>
           <li class="nav__item">
-            <NuxtLink class="nav__link" to="/reviews">Отзывы
-            </NuxtLink>
-          </li>
-          <li class="nav__item">
             <NuxtLink class="nav__link" to="/contacts">Контакты
             </NuxtLink>
           </li>
@@ -80,6 +76,9 @@ watch(() => route.path, () => {
               </li>
               <li>
                 <NuxtLink to="/contacts">Контактная информация</NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/reviews">Отзывы</NuxtLink>
               </li>
               </ul>
           </li>

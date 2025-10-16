@@ -70,10 +70,10 @@ useSeoMeta({
 const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
 </script>
 
+
 <template>
   <main class="main">
     <div class="container">
-      <h1>{{cleanText(category?.preview_content || '')}}</h1>
       <UBreadcrumb
           class="text-gray-300 flex  custom-breadcrumb"
           divider="-"
@@ -86,6 +86,8 @@ const cleanText = (html: string) => html.replace(/<[^>]*>/g, '')
     }"
           :links="[{ label: 'Comfy', to: '/' }, {label: 'Матрасы'}]"
       />
+      <h1>{{cleanText(category?.title || '')}}</h1>
+
     </div>
     <ProductsList
         :title="category?.title"

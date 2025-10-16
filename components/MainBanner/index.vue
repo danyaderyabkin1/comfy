@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay, Navigation, Pagination } from 'swiper/modules'
+import { Autoplay, Navigation, Pagination, EffectFade } from 'swiper/modules'
 
 const props = defineProps({
   title: {
@@ -53,13 +53,13 @@ const isMobileImageArray = computed(() => {
 
 // Настройки слайдера
 const swiperOptions = {
-  modules: [Autoplay, Pagination],
+  modules: [Autoplay, Pagination, EffectFade],
   slidesPerView: 1,
   spaceBetween: 0,
-  // autoplay: {
-  //   delay: 5000,
-  //   disableOnInteraction: false,
-  // },
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
   loop: true,
   pagination: {
     clickable: true,
@@ -76,6 +76,8 @@ const swiperOptions = {
         <Swiper
             v-bind="swiperOptions"
             class="hero-swiper-desktop"
+            :effect="'fade'"
+            :fadeEffect="{crossFade: true}"
         >
           <SwiperSlide v-for="(img, index) in image" :key="index">
             <img :src="img" :alt="`Banner image ${index + 1}`">
@@ -87,6 +89,8 @@ const swiperOptions = {
             v-if="isMobileImageArray"
             v-bind="swiperOptions"
             class="hero-swiper-mobile"
+            :effect="'fade'"
+            :fadeEffect="{crossFade: true}"
         >
           <SwiperSlide v-for="(img, index) in mobileImage" :key="index">
             <img :src="img" :alt="`Banner mobile image ${index + 1}`">
@@ -120,7 +124,7 @@ const swiperOptions = {
         </div>
 
         <div class="hero__wrap-btn">
-          <button class="btn btn-primary hero__btn" type="button" @click="isOpen = true">Оставить заявку</button>
+          <NuxtLink to="/krovati" class="btn btn-primary hero__btn" type="button">Перейти в каталог</NuxtLink>
           <div class="hero__contacts">
             <div class="hero__contacts-wrapper">
               <a

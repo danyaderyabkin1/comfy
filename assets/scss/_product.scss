@@ -58,7 +58,8 @@
 
 
   &__wrap {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     //max-width: 1120px;
     gap: 30px;
 
@@ -67,13 +68,13 @@
     }
 
     @include md-desktop {
-      flex-direction: column;
+      grid-template-columns: 1fr;
+      padding: 2rem 0;
       gap: 15px;
     }
 
     &-img {
       img {
-        max-width: 580px;
         transition: opacity .4s;
         border-radius: 15px;
         @include lg-desktop {

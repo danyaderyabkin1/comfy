@@ -1,6 +1,6 @@
 .news {
   padding: 0;
-  background-color: #FEF5E6;
+  background-color: #EFF0F2;
 
   @include sm-mobile {
     padding: 0 0 0.5rem 0;
@@ -14,9 +14,11 @@
   }
 
   &__container {
-    background-color: #EFF0F2;
     border-radius: 0 0 80px 80px;
     padding: 3rem;
+    position: relative;
+    max-width: 1500px;
+    margin: 0 auto;
 
     @include sm-mobile {
       padding: 1rem 1rem 2rem;
@@ -36,11 +38,8 @@
   }
 
   &__list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     max-width: 1400px;
     margin: 0 auto;
-    gap: 100px;
     &.tree {
       grid-template-columns: repeat(3, 1fr);
       gap: 50px;
@@ -87,6 +86,10 @@
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
+      height: 100%;
+      @include sm-mobile {
+        padding: 1.5rem;
+      }
       &.white {
         &::before {
           content: '';
@@ -164,11 +167,14 @@
   }
 
   &__link {
-    padding: 2rem 1rem;
+    padding: 2rem 0rem;
     word-break: break-word;
     font-size: $fontTitle;
     border-top: 1px dashed #000;
     font-weight: $fwBold;
+    @include sm-mobile {
+      padding: 1rem 0;
+    }
     &.white {
       color: $white;
       border-top: 1px dashed #fff;
