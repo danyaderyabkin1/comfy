@@ -9,6 +9,10 @@ const {data: product} = await useAsyncData(() => fetchProduct(cleanPath))
 // Выбранные опции - теперь храним объект с groupId и выбранным sku.id
 const selectedOptions = ref<Record<string, number>>({})
 
+// Главное изображение продукта и изначальное изображение
+const mainImage = ref('')
+const defaultImage = ref('')
+
 // Функция для группировки SKU по description
 const groupedSku = computed(() => {
   if (!product.value?.sku) return []
@@ -73,18 +77,43 @@ const totalPrice = computed(() => {
   return total
 })
 
+// Функция для обновления главного изображения на основе выбранных опций
+const updateMainImage = () => {
+  // Ищем первую выбранную опцию с изображением (кроме группы "Размер")
+  let newImage = defaultImage.value
+
+  for (const group of groupedSku.value) {
+    if (group.title !== 'Размер') {
+      const selectedOptionId = selectedOptions.value[group.title]
+      if (selectedOptionId) {
+        const selectedSku = group.items.find(item => item.id === selectedOptionId)
+        if (selectedSku?.image) {
+          newImage = selectedSku.image
+          break // Берем первое найденное изображение
+        }
+      }
+    }
+  }
+
+  mainImage.value = newImage
+}
+
 // Функция для выбора опции
 const selectOption = (groupId: string, sku: any) => {
+  const wasSelected = selectedOptions.value[groupId] === sku.id
+
   // Если уже выбрана эта же опция - снимаем выбор (кроме группы "Размер")
-  if (selectedOptions.value[groupId] === sku.id) {
+  if (wasSelected) {
     if (groupId !== 'Размер') {
       selectedOptions.value[groupId] = null
     }
-    return
+  } else {
+    // Выбираем новую опцию (заменяем старую в этой группе)
+    selectedOptions.value[groupId] = sku.id
   }
 
-  // Выбираем новую опцию (заменяем старую в этой группе)
-  selectedOptions.value[groupId] = sku.id
+  // Обновляем главное изображение
+  updateMainImage()
 }
 
 // Проверка, выбрана ли опция
@@ -130,10 +159,15 @@ const hasDiscountOnSelectedOptions = computed(() => {
   return totalPrice.value < originalTotalPrice.value
 })
 
-
 // Инициализируем выбранные опции при загрузке
 watch(groupedSku, (newGroups) => {
   if (newGroups.length > 0) {
+    // Сохраняем изначальное изображение
+    if (product.value?.image) {
+      defaultImage.value = product.value.image
+      mainImage.value = product.value.image
+    }
+
     // Устанавливаем первую опцию по умолчанию ТОЛЬКО для группы "Размер"
     newGroups.forEach(group => {
       if (group.title === 'Размер' && group.items.length > 0 && !selectedOptions.value[group.title]) {
@@ -164,7 +198,6 @@ useSeoMeta({
   ogTitle: product.value?.meta_title ? product.value?.meta_title : product.value.title,
   description: product.value?.meta_description ? product.value?.meta_description : product.value.title,
   ogDescription: product.value?.meta_description ? product.value?.meta_description : product.value.title,
-  // ogImage: 'https://otellica.ru/assets/images/logo.webp',
 })
 
 if (!product.value) {
@@ -195,8 +228,9 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
         />
         <div class="product__wrap">
           <div class="product__wrap-img">
-            <a :href="product?.image" data-fancybox="gallery">
-              <img :src="product?.image" :alt="product?.preview_content" draggable="false">
+            <!-- Главное изображение - обновляется при выборе опции -->
+            <a :href="mainImage" data-fancybox="gallery">
+              <img :src="mainImage" :alt="product?.preview_content" draggable="false">
             </a>
             <ul v-if="product?.gallery.length > 1" class="product__wrap-gallery">
               <li v-for="image in product?.gallery" :key="image">
@@ -241,7 +275,6 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
                       type="button"
                   >
                     <span class="sku-title">{{ sku.title }}</span>
-<!--                    <span v-if="sku.price > 0" class="sku-price">+{{ sku.price }} ₽</span>-->
                   </button>
                 </div>
               </div>
@@ -257,7 +290,6 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
       <div v-if="product?.content" class="container product__container">
         <div v-html="product?.content"></div>
       </div>
-<!--      <ProductDescription/>-->
 
       <UModal v-model="isOpen"
               :ui="{ container: 'items-start pt-14 bg-white sm:bg-gray-50/50', shadow: 'shadow-none sm:shadow-lg', padding: 'p-0 sm:p-0', rounded: 'rounded-none sm:rounded-lg' }"
@@ -282,6 +314,7 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
 </template>
 
 <style scoped>
+/* Стили остаются без изменений */
 .sku-groups {
   display: flex;
   flex-direction: column;
@@ -341,7 +374,6 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
   color: #D0B6A7;
 }
 
-
 .description-box, .bed-info, .dimensions {
   margin-bottom: 20px;
   padding: 35px;
@@ -355,7 +387,6 @@ const cleanText = (html:string) => html.replace(/<[^>]*>/g, '')
 h2, h3 {
   color: #333;
 }
-
 
 .image-section img {
   width: 100%;
